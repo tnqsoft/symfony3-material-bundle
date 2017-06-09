@@ -12,7 +12,6 @@
 		"symfony 3"
 	],
 	"homepage": "http://symfony3-material.tnqsoft.com/",
-	"license": "Apache-2.0",
 	"support": {
 		"source": "https://github.com/tnqsoft/symfony3-material-bundle",
 		"issues": "https://github.com/tnqsoft/symfony3-material-bundle/issues"
