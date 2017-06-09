@@ -1,0 +1,27 @@
+{% extends 'TnqsoftMaterialBundle:Layout:one-column.html.twig' %}
+{##############################################################################}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('bundles/tnqsoftmaterial/css/exception.css') }}" type="text/css" media="all"/>
+{% endblock %}
+{##############################################################################}
+{% block body %}
+    <div class="row">
+        <div class="error-box">
+            <div class="row">
+                <div class="col-xs-12 col-sm-3">
+                    <img src="{{ asset('bundles/tnqsoftmaterial/img/exception.png') }}" class="img-responsive"/>
+                </div>
+                <div class="col-xs-12 col-sm-9">
+                    <h1 class="text-center">Lỗi {{ exception.statusCode }}</h1>
+                    <div class="alert alert-danger text-center" role="alert">
+                        <em>{{ exception.message }}.</em>
+                    </div>
+                    <p class="text-center">Bạn có thể quay lại
+                        <a href="javascript:history.go(-1);">trang trước</a>, hoặc trở về
+                        <a href="{{ path('homepage') }}">trang chủ</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

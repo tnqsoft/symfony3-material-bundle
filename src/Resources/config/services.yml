@@ -1,0 +1,56 @@
+services:
+
+    log_format:
+        class: Monolog\Formatter\LineFormatter
+        arguments:
+            - "[%%datetime%%] %%channel%%.%%level_name%%\n\t[MESSAGE] %%message%%\n\t[CONTEXT] %%context%%\n"
+
+    tnqsoft_material.twig.extension.common:
+        class: Tnqsoft\MaterialBundle\Twig\Extension\CommonExtension
+        tags:
+            - { name: twig.extension }
+
+    tnqsoft_material.twig.extension.boostrap_element:
+        class: Tnqsoft\MaterialBundle\Twig\Extension\BootstrapElementExtension
+        arguments: ['TnqsoftMaterialBundle:Common:element.html.twig']
+        tags:
+            - { name: twig.extension }
+
+    tnqsoft_material.twig.extension.routing:
+        class: Tnqsoft\MaterialBundle\Twig\Extension\RoutingExtension
+        arguments:
+            - '@router'
+            - '@request_stack'
+        tags:
+            - { name: twig.extension }
+
+    tnqsoft_material.service.email:
+        class: Tnqsoft\MaterialBundle\Service\Email
+        arguments: ['%mailer_noreply%', '%mailer_list_sources%', '%mailer_list_sources_password%', '@twig']
+
+    tnqsoft_material.validator.base:
+        class: Tnqsoft\MaterialBundle\Validator\BaseValidator
+        #abstract: true
+        calls:
+            - [setValidator, ["@validator"]]
+
+    tnqsoft_material.data_access.base:
+        class: Tnqsoft\MaterialBundle\DataAccess\BaseDataAccess
+        arguments: ['@doctrine.orm.entity_manager']
+
+    tnqsoft_material.data_access.example:
+        parent: tnqsoft_material.data_access.base
+        class: Tnqsoft\MaterialBundle\DataAccess\ExampleDataAccess
+
+    tnqsoft_material.validator.file:
+        class: Tnqsoft\MaterialBundle\Validator\FileValidator
+        parent: tnqsoft_material.validator.base
+
+    tnqsoft_material.process.upload:
+        class: Tnqsoft\MaterialBundle\Process\UploadProcess
+        arguments:
+            - '%upload_tmp_dir%'
+            - '%upload_tmp_path%'
+            - '%upload_max_size%'
+            - '%upload_max_width%'
+            - '@security.token_storage'

@@ -1,0 +1,222 @@
+{# TABLE #}
+{% block start %}
+    <table
+        class="table table-striped table-bordered table-hover table-list {% if class is defined %}{{ class }}{% endif %}"
+        {% if id is defined %}id="{{ id }}"{% endif %}
+        {% if attr is defined %}{{ attr|raw }}{% endif %}
+    >
+{% endblock %}
+{#----------------------------------------------------------#}
+{% block end %}
+</table>
+{% endblock %}
+{#----------------------------------------------------------#}
+{% block thead %}
+{% set orderBy = app.request.query.get('orderBy') %}
+{% set orderDir = app.request.query.get('orderDir') %}
+<thead>
+    <tr {% if class is defined %}class="{{ class }}"{% endif %}>
+        {% for column in columns %}
+            <th
+            {% if column.class is defined %}class="{{ column.class }}"{% endif %}
+            {% if column.id is defined %}id="{{ column.id }}"{% endif %}
+            {% if column.width is defined %}width="{{ column.width }}"{% endif %}
+            {% if column.nowrap is defined %}nowrap=""{% endif %}
+            {% if column.attr is defined %}{{ column.attr|raw }}{% endif %}
+            >
+                {% if column.field is defined %}
+                    {% if column.field == orderBy and orderDir == 'asc' %}
+                        {% set direct = 'desc' %}
+                    {% else %}
+                        {% set direct = 'asc' %}
+                    {% endif %}
+                    {% set params = app.request.query.all|merge(app.request.get('_route_params'))|merge({'orderBy': column.field, 'orderDir': direct }) %}
+                    <a href="{{ path(app.request.get('_route'), params) }}">
+                        {% if column.field == orderBy %}
+                            <i class="fa fa-sort-alpha-{{ orderDir }} text-danger"></i>
+                        {% endif %}
+                        {{ column.label|trans|raw }}
+                    </a>
+                {% else %}
+                    {{ column.label|trans|raw }}
+                {% endif %}
+            </th>
+        {% endfor %}
+    </tr>
+</thead>
+{% endblock %}
+{#----------------------------------------------------------#}
+
+{# BUTTON #}
+{% block button %}
+    <button
+        type="{{ type }}"
+        class="btn btn-{{ class }}"
+        {% if id is defined %}id="{{ id }}"{% endif %}
+        {% if attr is defined %}{{ attr|raw }}{% endif %}
+    >
+        {% if icon is defined %}<i class="fa fa-{{ icon }}"></i>{% endif %}
+        {{ text|trans|raw }}
+    </button>
+{% endblock %}
+
+{% block linkButton %}
+    <a
+        href="{{ href }}"
+        class="btn btn-{{ class }}"
+        {% if id is defined %}id="{{ id }}"{% endif %}
+        {% if attr is defined %}{{ attr|raw }}{% endif %}
+    >
+        {% if icon is defined %}
+            <i class="fa fa-{{ icon }}"></i>
+        {% endif %}
+        {{ text|trans|raw }}
+    </a>
+{% endblock %}
+{#----------------------------------------------------------#}
+
+{# ICON #}
+{% block icon %}
+<i
+    class="fa fa-{{ icon }}"
+    {% if id is defined %}id="{{ id }}"{% endif %}
+    {% if attr is defined %}{{ attr|raw }}{% endif %}
+></i>
+{% endblock %}
+{#----------------------------------------------------------#}
+
+{# MODAL #}
+{% block modalDelete %}
+{% include 'TnqsoftMaterialBundle:Common:Modal/delete.html.twig'
+with {
+    'class': class,
+    'id': id,
+    'attr': attr,
+    'size': size,
+}
+%}
+{% endblock %}
+{#----------------------------------------------------------#}
+
+{# ALERT #}
+{% block alert %}
+<div
+    class="alert alert-{{ type }} alert-dismissible fade in {% if class is defined %}{{ class }}{% endif %}"
+    role="alert"
+    {% if id is defined %}id="{{ id }}"{% endif %}
+    {% if attr is defined %}{{ attr|raw }}{% endif %}
+>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">×</span>
+    </button>
+    {{ message|trans|raw }}
+</div>
+{% endblock %}
+{#----------------------------------------------------------#}
+
+{% block pagination %}
+{% if paginator|length > 0 %}
+<div class="row">
+    <div class="col-sm-9">
+        {% if paginator.totalPage > 1 %}
+        <nav aria-label="Page navigation">
+            <ul class="pagination {{ size }}">
+                {% set params = app.request.query.all|merge(app.request.get('_route_params')) %}
+                {% set routerName = app.request.get('_route') %}
+                {% set pages = paginator.smartPagination() %}
+                {#--------------------------------------------#}
+                {# FIRST #}
+                {% if paginator.page > 1 %}
+                <li>
+                    <a href="{{ path(routerName, params|merge({'page': 1 })) }}" aria-label="First">
+                        <i class="fa fa-angle-double-left"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ path(routerName, params|merge({'page': paginator.prevPage })) }}" aria-label="Previous">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                </li>
+                {% else %}
+                <li class="disabled">
+                    <span aria-hidden="true" aria-label="First">
+                        <i class="fa fa-angle-double-left"></i>
+                    </span>
+                </li>
+                <li class="disabled">
+                    <span aria-hidden="true" aria-label="Previous">
+                        <i class="fa fa-angle-left"></i>
+                    </span>
+                </li>
+                {% endif %}
+                {#--------------------------------------------#}
+                {% for i in pages %}
+                    {% if i == paginator.page  %}
+                    <li class="active"><span>{{ i }}</span></li>
+                    {% elseif i == '...' %}
+                    <li><span>{{ i }}</span></li>
+                    {% else %}
+                    <li><a href="{{ path(routerName, params|merge({'page': i})) }}">{{ i }}</a></li>
+                    {% endif %}
+                {% endfor %}
+                {#--------------------------------------------#}
+                {% if paginator.page < paginator.totalPage %}
+                <li>
+                    <a href="{{ path(routerName, params|merge({'page': paginator.nextPage })) }}" aria-label="Next">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ path(routerName, params|merge({'page': paginator.totalPage })) }}" aria-label="Last">
+                        <i class="fa fa-angle-double-right"></i>
+                    </a>
+                </li>
+                {% else %}
+                <li class="disabled">
+                    <span aria-hidden="true" aria-label="Next">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                </li>
+                <li class="disabled">
+                    <span aria-hidden="true" aria-label="Last">
+                        <i class="fa fa-angle-double-right"></i>
+                    </a>
+                </li>
+                {% endif %}
+                {#--------------------------------------------#}
+            </ul>
+        </nav>
+        {% endif %}
+    </div>
+    <div class="col-sm-3 text-right">
+        <p class="pagination-text">{{ paginator.startRecord }} - {{ paginator.endRecord }} / {{ paginator.totalRecord }}</p>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
+{#----------------------------------------------------------#}
+
+{# SEARCH #}
+{% block searchbox %}
+{{ form_start(form) }}
+<div class="input-group">
+    {#{ form_label(search_form.keyword) }#}
+    {#{ form_errors(search_form.keyword) }#}
+    {{ form_widget(form.keyword) }}
+    <span class="input-group-btn">
+      {{ button({
+          'text': '',
+          'class': 'info',
+          'type': 'submit',
+          'icon': 'search',
+      }) }}
+      {{ link_button({
+          'text': '',
+          'class': 'warning',
+          'href': url,
+          'icon': 'refresh',
+      }) }}
+    </span>
+</div><!-- /input-group -->
+{{ form_end(form) }}
+{% endblock %}

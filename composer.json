@@ -1,0 +1,53 @@
+{
+    "name": "tnqsoft/material-bundle",
+    "license": "MIT",
+    "type": "symfony-bundle",
+    "description": "TNQSoft Material Bundle for Symfony 3",
+    "keywords": [
+		"crud", 
+		"material", 
+		"common", 
+		"bootstrap", 
+		"form", 
+		"symfony 3"
+	],
+	"homepage": "http://symfony3-material.tnqsoft.com/",
+	"license": "Apache-2.0",
+	"support": {
+		"source": "https://github.com/tnqsoft/symfony3-material-bundle",
+		"issues": "https://github.com/tnqsoft/symfony3-material-bundle/issues"
+	},
+    "authors": [
+        {
+            "name": "Nguyen Nhu Tuan",
+            "homepage": "https://github.com/tnqsoft/symfony3-material-bundle",
+            "email": "tuanquynh0508@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.9",
+        "symfony/symfony": "^3.0.*",
+        "doctrine/doctrine-bundle": "^1.6",
+        "doctrine/doctrine-cache-bundle": "^1.2",
+        "doctrine/orm": "^2.5",
+        "symfony/swiftmailer-bundle": "^2.3",
+        "doctrine/doctrine-migrations-bundle": "^1.2",
+		"symfony/assetic-bundle": "^2.8",
+        "giggsey/libphonenumber-for-php": "^8.0",
+        "suncat/mobile-detect-bundle": "1.0.*",
+        "friendsofsymfony/jsrouting-bundle": "@stable",
+        "willdurand/js-translation-bundle": "@stable",
+        "jms/serializer-bundle": "^1.1"
+    },
+    "minimum-stability": "dev",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.x-dev"
+        }
+    },
+	"autoload": {
+        "psr-4": {
+            "Tnqsoft\\MaterialBundle\\": "src/"
+        }
+    }
+}
